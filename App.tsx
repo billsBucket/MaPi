@@ -8,6 +8,7 @@ import SolanaWallet from './SolanaWallet';
 const App: React.FC = () => {
   const [location, setLocation] = useState<Location.LocationObject | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [userData, setUserData] = useState<any>(null);
 
   useEffect(() => {
     (async () => {
@@ -20,6 +21,18 @@ const App: React.FC = () => {
       let location = await Location.getCurrentPositionAsync({});
       setLocation(location);
     })();
+
+    // Fetch user data
+    const fetchUserData = async () => {
+      const { data, error } = await supabase.auth.getUser();
+      if (error) {
+        setErrorMsg(error.message);
+      } else {
+        setUserData(data);
+      }
+    };
+
+    fetchUserData();
   }, []);
 
   if (errorMsg) {
@@ -50,6 +63,11 @@ const App: React.FC = () => {
           title="You are here"
         />
       </MapView>
+      {userData ? (
+        <Text>User Data: {JSON.stringify(userData.user)}</Text>
+      ) : (
+        <Text>No user data found</Text>
+      )}
     </View>
   );
 };

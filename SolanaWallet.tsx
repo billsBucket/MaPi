@@ -8,7 +8,7 @@ const SolanaWallet: React.FC = () => {
 
   const connectWallet = async () => {
     // Connect to Solana wallet (Phantom, Sollet, etc.)
-    const connection = new Connection('https://api.mainnet-beta.solana.com');
+    const connection = new Connection(process.env.NEXT_PUBLIC_SOLANA_NETWORK!);
     const providerUrl = 'https://www.sollet.io';
     const provider = new WebBrowser.Provider(providerUrl);
 
